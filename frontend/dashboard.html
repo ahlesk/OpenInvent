@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Inventário de Notebooks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/theme.css?v=3" />
+  <link rel="stylesheet" href="css/reset.css?v=3" />
+  <link rel="stylesheet" href="css/layout.css?v=3" />
+  <link rel="stylesheet" href="css/components.css?v=3" />
+  <script src="js/theme.js?v=3"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-left">
+      <h1>Inventário de Notebooks</h1>
+      <nav class="app-nav">
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="estoque.html">Estoque</a>
+        <a href="notebooks.html">Notebooks</a>
+        <a href="responsaveis.html">Responsáveis</a>
+      </nav>
+    </div>
+    <div class="user-info">
+      <span id="current-user">Carregando...</span>
+      <button id="btn-logout" class="btn btn-sm">Sair</button>
+    </div>
+  </header>
+
+  <main class="app-container">
+    <div class="card-grid">
+      <a class="stat-card" href="estoque.html">
+        <div class="stat-value" id="card-em-estoque">—</div>
+        <div class="stat-label">Em estoque</div>
+      </a>
+      <a class="stat-card" href="notebooks.html?status=EM_USO">
+        <div class="stat-value" id="card-em-uso">—</div>
+        <div class="stat-label">Em uso</div>
+      </a>
+      <a class="stat-card" href="notebooks.html?status=MANUTENCAO">
+        <div class="stat-value" id="card-manutencao">—</div>
+        <div class="stat-label">Em manutenção</div>
+      </a>
+      <a class="stat-card" href="notebooks.html?status=INATIVO">
+        <div class="stat-value" id="card-inativo">—</div>
+        <div class="stat-label">Inativos</div>
+      </a>
+      <a class="stat-card" href="notebooks.html">
+        <div class="stat-value" id="card-total">—</div>
+        <div class="stat-label">Total de notebooks</div>
+      </a>
+    </div>
+
+    <h2 class="section-title">Últimas movimentações</h2>
+    <div class="table-wrapper">
+      <table id="movements-feed">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Asset</th>
+            <th>Funcionário</th>
+            <th>Registrado por</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="5">Carregando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script type="module" src="js/dashboard.js?v=2"></script>
+</body>
+</html>

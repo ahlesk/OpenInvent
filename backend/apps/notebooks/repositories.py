@@ -1,0 +1,44 @@
+"""Repository: única camada que fala diretamente com a collection `notebooks`."""
+from __future__ import annotations
+
+from apps.core.db import get_db
+
+
+class NotebookRepository:
+    def __init__(self, db=None):
+        # Ver comentário equivalente em apps.users.repositories.UserRepository:
+        # get_db() só é resolvido em `collection`, nunca aqui, para não
+        # prender este repository ao banco vigente no momento em que a view
+        # (que o guarda como atributo de classe) foi importada.
+        self._db = db
+
+    @property
+    def collection(self):
+        return (self._db or get_db()).notebooks
+
+    def insert(self, doc: dict) -> dict:
+        result = self.collection.insert_one(doc)
+        doc["_id"] = result.inserted_id
+        return doc
+
+    def find_by_asset(self, asset: str) -> dict | None:
+        return self.collection.find_one({"asset": asset})
+
+    def exists_by_asset(self, asset: str) -> bool:
+        return self.collection.count_documents({"asset": asset}, limit=1) > 0
+
+    def list(self, status: str | None = None, search: str | None = None) -> list[dict]:
+        query: dict = {}
+        if status:
+            query["status"] = status
+        if search:
+            query["asset"] = {"$regex": search, "$options": "i"}
+        return list(self.collection.find(query).sort("created_at", -1))
+
+    def update_by_asset(self, asset: str, updates: dict) -> dict | None:
+        self.collection.update_one({"asset": asset}, {"$set": updates})
+        return self.find_by_asset(asset)
+
+    def count_by_status(self) -> dict[str, int]:
+        pipeline = [{"$group": {"_id": "$status", "count": {"$sum": 1}}}]
+        return {row["_id"]: row["count"] for row in self.collection.aggregate(pipeline)}
